@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>roam. — Itineraries &amp; Packages</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .logo-img { height: 32px; width: auto; display: block; }
+
+    /* ─── Type tabs ─────────────────────────── */
+    .type-tabs {
+      padding: 0 48px 48px;
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 64px;
+    }
+
+    .type-tab {
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      padding: 10px 24px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s;
+    }
+
+    .type-tab::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0; right: 0;
+      height: 1.5px;
+      background: var(--text);
+      transform: scaleX(0);
+      transition: transform 0.2s;
+    }
+
+    .type-tab:hover { color: var(--text); }
+
+    .type-tab.active {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .type-tab.active::after { transform: scaleX(1); }
+
+    /* ─── Packages list ─────────────────────── */
+    .packages-wrap { padding: 0 48px 96px; }
+
+    .package-row {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 56px;
+      align-items: start;
+      padding: 48px 0;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: inherit;
+      transition: opacity 0.2s;
+    }
+
+    .package-row:hover { opacity: 0.85; }
+
+    .package-row:first-child { border-top: 1px solid var(--border); }
+
+    .package-img {
+      aspect-ratio: 4/3;
+      overflow: hidden;
+    }
+
+    .package-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .package-row:hover .package-img img { transform: scale(1.04); }
+
+    .package-meta { padding-top: 8px; }
+
+    .package-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .pkg-tag {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .package-meta h2 {
+      font-size: clamp(24px, 2.5vw, 34px);
+      margin-bottom: 12px;
+      line-height: 1.15;
+    }
+
+    .package-meta .tagline {
+      font-size: 15px;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .package-meta .desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 28px;
+      max-width: 500px;
+    }
+
+    .package-details {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 28px;
+    }
+
+    .pkg-detail {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .pkg-detail .label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .pkg-detail .value {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .package-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--olive);
+      letter-spacing: 0.02em;
+    }
+
+    .package-cta svg { transition: transform 0.2s; }
+    .package-row:hover .package-cta svg { transform: translateX(4px); }
+
+    /* ─── Package panel hidden by default ──── */
+    .package-panel { display: block; }
+
+    @media (max-width: 900px) {
+      .package-row {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .type-tabs, .packages-wrap { padding-left: 20px; padding-right: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── Nav ─────────────────────────────── -->
+  <nav id="main-nav">
+    <a href="index.html"><img src="roam.logo.png" alt="roam." class="logo-img" /></a>
+    <ul class="nav-links">
+      <li><a href="destinations.html">Curated</a></li>
+      <li><a href="packages.html" class="active">Weekends</a></li>
+      <li><a href="packages.html" class="active">Routes</a></li>
+      <li><a href="destinations.html">Guides</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="advisory.html">Advisory</a></li>
+    </ul>
+    <a href="contact.html" class="nav-contact">Contact</a>
+  </nav>
+
+  <!-- ─── Page hero ───────────────────────── -->
+  <div class="page-hero">
+    <p class="eyebrow">Itineraries &amp; Packages</p>
+    <h1>Trips worth<br><em>taking slowly.</em></h1>
+    <p>Each itinerary is designed around place, pace, and the kind of moments you'll still be talking about years later.</p>
+  </div>
+
+  <!-- ─── Type tabs ───────────────────────── -->
+  <div class="type-tabs">
+    <button class="type-tab active" onclick="switchTab(this, 'all')">All</button>
+    <button class="type-tab" onclick="switchTab(this, 'curated')">roam. curated</button>
+    <button class="type-tab" onclick="switchTab(this, 'weekends')">roam. weekends</button>
+    <button class="type-tab" onclick="switchTab(this, 'routes')">roam. routes</button>
+  </div>
+
+  <!-- ─── Packages ────────────────────────── -->
+  <div class="packages-wrap" id="packages-list">
+
+    <a href="contact.html" class="package-row" data-type="curated">
+      <div class="package-img">
+        <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=900&q=80" alt="Kyoto" />
+      </div>
+      <div class="package-meta">
+        <div class="package-tags">
+          <span class="pkg-tag">roam. curated</span>
+          <span class="pkg-tag">Asia</span>
+          <span class="pkg-tag">Culture</span>
+        </div>
+        <h2>Kyoto in 5 Days</h2>
+        <p class="tagline">Quiet temples &amp; hidden cafes</p>
+        <p class="desc">A slow, deliberate journey through Japan's most spiritual city. Early mornings in Fushimi Inari before the crowds, afternoons in Gion's narrow lanes, evenings in a traditional machiya.</p>
+        <div class="package-details">
+          <div class="pkg-detail"><span class="label">Duration</span><span class="value">5 days</span></div>
+          <div class="pkg-detail"><span class="label">Group size</span><span class="value">2–6 people</span></div>
+          <div class="pkg-detail"><span class="label">From</span><span class="value">$3,200 / person</span></div>
+        </div>
+        <span class="package-cta">
+          Inquire about this trip
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <a href="contact.html" class="package-row" data-type="curated">
+      <div class="package-img">
+        <img src="AmalfiCoast.webp" alt="Amalfi Coast" />
+      </div>
+      <div class="package-meta">
+        <div class="package-tags">
+          <span class="pkg-tag">roam. curated</span>
+          <span class="pkg-tag">Europe</span>
+          <span class="pkg-tag">Coastal</span>
+        </div>
+        <h2>Amalfi Coast Escape</h2>
+        <p class="tagline">Cliffside views &amp; coastal drives</p>
+        <p class="desc">Seven days along Italy's most dramatic coastline. Private boat transfers between Positano, Ravello, and Praiano. Dinner at places that don't have websites. A chef's table in someone's garden.</p>
+        <div class="package-details">
+          <div class="pkg-detail"><span class="label">Duration</span><span class="value">7 days</span></div>
+          <div class="pkg-detail"><span class="label">Group size</span><span class="value">2–4 people</span></div>
+          <div class="pkg-detail"><span class="label">From</span><span class="value">$5,800 / person</span></div>
+        </div>
+        <span class="package-cta">
+          Inquire about this trip
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <a href="contact.html" class="package-row" data-type="routes">
+      <div class="package-img">
+        <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=900&q=80" alt="Zion to Bryce" />
+      </div>
+      <div class="package-meta">
+        <div class="package-tags">
+          <span class="pkg-tag">roam. routes</span>
+          <span class="pkg-tag">Americas</span>
+          <span class="pkg-tag">Road trip</span>
+        </div>
+        <h2>Zion to Bryce Canyon</h2>
+        <p class="tagline">Desert road adventure</p>
+        <p class="desc">An unforgettable American Southwest road trip. Canyon walls that glow at sunset, stargazing at elevations above 9,000 feet, and hikes that leave you completely wordless.</p>
+        <div class="package-details">
+          <div class="pkg-detail"><span class="label">Duration</span><span class="value">8 days</span></div>
+          <div class="pkg-detail"><span class="label">Group size</span><span class="value">2–8 people</span></div>
+          <div class="pkg-detail"><span class="label">From</span><span class="value">$2,400 / person</span></div>
+        </div>
+        <span class="package-cta">
+          Inquire about this trip
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <a href="contact.html" class="package-row" data-type="weekends">
+      <div class="package-img">
+        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=900&q=80" alt="Cotswolds weekend" />
+      </div>
+      <div class="package-meta">
+        <div class="package-tags">
+          <span class="pkg-tag">roam. weekends</span>
+          <span class="pkg-tag">Europe</span>
+          <span class="pkg-tag">Countryside</span>
+        </div>
+        <h2>The Cotswolds Weekend</h2>
+        <p class="tagline">Stone villages &amp; slow mornings</p>
+        <p class="desc">Three days in England's most quietly beautiful region. A 16th-century inn, long walks through meadows, afternoon tea that actually means something, and a Sunday roast that will ruin all others.</p>
+        <div class="package-details">
+          <div class="pkg-detail"><span class="label">Duration</span><span class="value">3 days</span></div>
+          <div class="pkg-detail"><span class="label">Group size</span><span class="value">2 people</span></div>
+          <div class="pkg-detail"><span class="label">From</span><span class="value">$1,600 / person</span></div>
+        </div>
+        <span class="package-cta">
+          Inquire about this trip
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <a href="contact.html" class="package-row" data-type="curated">
+      <div class="package-img">
+        <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=900&q=80" alt="Patagonia" />
+      </div>
+      <div class="package-meta">
+        <div class="package-tags">
+          <span class="pkg-tag">roam. curated</span>
+          <span class="pkg-tag">Americas</span>
+          <span class="pkg-tag">Adventure</span>
+        </div>
+        <h2>Patagonia: End of the World</h2>
+        <p class="tagline">Glaciers, silence &amp; untouched wilderness</p>
+        <p class="desc">Twelve days at the edge of the earth. Torres del Paine, Perito Moreno Glacier, private estancias, and landscapes so vast they recalibrate your sense of scale entirely.</p>
+        <div class="package-details">
+          <div class="pkg-detail"><span class="label">Duration</span><span class="value">12 days</span></div>
+          <div class="pkg-detail"><span class="label">Group size</span><span class="value">2–6 people</span></div>
+          <div class="pkg-detail"><span class="label">From</span><span class="value">$7,200 / person</span></div>
+        </div>
+        <span class="package-cta">
+          Inquire about this trip
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ─── Footer ───────────────────────────── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="white.roam.logo.png" alt="roam." class="footer-logo-img" />
+        <p>Intentional travel for people who want more than a vacation—they want a story.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Experiences</h4>
+        <ul>
+          <li><a href="packages.html">roam. curated</a></li>
+          <li><a href="packages.html">roam. weekends</a></li>
+          <li><a href="packages.html">roam. routes</a></li>
+          <li><a href="packages.html">roam. stays</a></li>
+          <li><a href="packages.html">roam. guides</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Discover</h4>
+        <ul>
+          <li><a href="destinations.html">All destinations</a></li>
+          <li><a href="destinations.html">Europe</a></li>
+          <li><a href="destinations.html">Asia</a></li>
+          <li><a href="destinations.html">Americas</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="https://instagram.com/roamtravel.club" target="_blank">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 roam. All rights reserved.</p>
+      <p>Privacy &nbsp;·&nbsp; Terms</p>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+  <script>
+    function switchTab(btn, type) {
+      document.querySelectorAll('.type-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.package-row').forEach(row => {
+        row.style.display = (type === 'all' || row.dataset.type === type) ? 'grid' : 'none';
+      });
+    }
+  </script>
+  <script src="logo.js"></script>
+</body>
+</html>

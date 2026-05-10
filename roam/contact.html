@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>roam. — Start your trip</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --cream:   #f4ede2;
+      --cream2:  #f9f5ee;
+      --text:    #4a3928;
+      --text-lt: #7a6550;
+      --border:  #ddd0bc;
+      --taupe:   #9e7d60;
+      --olive:   #3e4c36;
+    }
+
+    body {
+      background: var(--cream2);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── Nav ───────────────────────────────── */
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 28px 48px;
+      border-bottom: 1px solid var(--border);
+      background: var(--cream2);
+    }
+
+    .logo-img { height: 32px; width: auto; display: block; }
+    .top-nav ul { display: flex; gap: 32px; list-style: none; }
+    .top-nav a { font-size: 12px; letter-spacing: 0.06em; color: var(--text-lt); transition: color 0.2s; }
+    .top-nav a:hover, .top-nav a.active { color: var(--text); }
+
+    .contact-link {
+      font-size: 12px; font-weight: 500; letter-spacing: 0.08em;
+      padding: 8px 20px; border: 1px solid var(--text);
+      color: var(--cream2); background: var(--text);
+    }
+
+    /* ─── Layout ─────────────────────────────── */
+    .contact-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: calc(100vh - 73px);
+    }
+
+    /* ─── Left panel ─────────────────────────── */
+    .contact-left {
+      padding: 72px 64px;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .contact-left .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--taupe);
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    .contact-left h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(40px, 4.5vw, 60px);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .contact-left h1 em { font-style: italic; }
+
+    .contact-left .intro-text {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-lt);
+      line-height: 1.85;
+      max-width: 380px;
+      margin-bottom: 56px;
+    }
+
+    .contact-details { margin-bottom: 48px; }
+
+    .contact-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .contact-detail:first-child { border-top: 1px solid var(--border); }
+
+    .detail-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--taupe);
+      display: block;
+      margin-bottom: 4px;
+      min-width: 80px;
+    }
+
+    .detail-value {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text);
+    }
+
+    .contact-image {
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .contact-image img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ─── Right panel / Form ─────────────────── */
+    .contact-right {
+      padding: 72px 64px;
+      background: var(--cream2);
+    }
+
+    .form-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 400;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .form-sub {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-lt);
+      margin-bottom: 40px;
+      line-height: 1.7;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .form-group label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--taupe);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text);
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      padding: 10px 0;
+      outline: none;
+      width: 100%;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--text); }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: var(--border); }
+
+    .form-group select { cursor: pointer; }
+    .form-group select option { color: var(--text); background: #fff; }
+    .form-group textarea { resize: none; min-height: 96px; line-height: 1.7; }
+
+    /* Trip type toggles */
+    .type-toggles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .type-toggle {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      padding: 7px 16px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-lt);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .type-toggle.on {
+      border-color: var(--olive);
+      color: var(--olive);
+      background: rgba(62,76,54,0.06);
+    }
+
+    /* Submit */
+    .form-submit { margin-top: 32px; }
+
+    .btn-submit {
+      width: 100%;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--cream2);
+      background: var(--text);
+      border: none;
+      padding: 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-submit:hover { background: var(--taupe); }
+
+    .form-note {
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--text-lt);
+      text-align: center;
+      margin-top: 14px;
+      line-height: 1.6;
+    }
+
+    /* Success state */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 64px 24px;
+    }
+
+    .success-icon {
+      width: 52px; height: 52px;
+      border: 1px solid var(--olive);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+
+    .form-success h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 30px;
+      font-weight: 400;
+      margin-bottom: 14px;
+    }
+
+    .form-success p {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-lt);
+      line-height: 1.8;
+    }
+
+    .form-success a { color: var(--olive); }
+
+    /* ─── Footer ─────────────────────────────── */
+    footer { background: var(--text); padding: 56px 48px 36px; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 48px; padding-bottom: 40px; border-bottom: 1px solid rgba(244,237,226,0.1); margin-bottom: 28px; }
+    .footer-logo { font-weight: 700; font-size: 16px; color: #f9f5ee; display: block; margin-bottom: 12px; }
+    .footer-logo-img { height: 20px; width: auto; display: block; margin-bottom: 12px; }
+    .footer-brand p { font-size: 13px; color: rgba(244,237,226,0.45); line-height: 1.8; font-weight: 300; max-width: 220px; }
+    .footer-col h4 { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(244,237,226,0.3); font-weight: 500; margin-bottom: 18px; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 10px; }
+    .footer-col a { font-size: 13px; font-weight: 300; color: rgba(244,237,226,0.5); transition: color 0.2s; }
+    .footer-col a:hover { color: #f9f5ee; }
+    .footer-bottom { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; }
+    .footer-bottom p { font-size: 12px; font-weight: 300; color: rgba(244,237,226,0.28); }
+
+    @media (max-width: 900px) {
+      .top-nav ul { display: none; }
+      .top-nav { padding: 20px 24px; }
+      .contact-wrap { grid-template-columns: 1fr; }
+      .contact-left { padding: 56px 24px 40px; border-right: none; border-bottom: 1px solid var(--border); }
+      .contact-image { display: none; }
+      .contact-right { padding: 48px 24px; }
+      .form-row { grid-template-columns: 1fr; gap: 0; }
+      .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
+      footer { padding: 48px 24px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <a href="index.html"><img src="roam.logo.png" alt="roam." class="logo-img" /></a>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="itineraries.html">Itineraries</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="advisory.html">Advisory</a></li>
+    </ul>
+    <a href="contact.html" class="contact-link">Contact</a>
+  </nav>
+
+  <div class="contact-wrap">
+
+    <!-- ─── Left ───────────────────────────── -->
+    <div class="contact-left">
+      <div>
+        <span class="eyebrow">Get in touch</span>
+        <h1>Let's plan<br><em>your trip.</em></h1>
+        <p class="intro-text">Tell us where you want to go, how you want to feel, and we'll take care of the rest. Every roam. itinerary starts with a conversation.</p>
+
+        <div class="contact-details">
+          <div class="contact-detail">
+            <div>
+              <span class="detail-label">Email</span>
+              <span class="detail-value">roaminquiries@roamtravel.club</span>
+            </div>
+          </div>
+          <div class="contact-detail">
+            <div>
+              <span class="detail-label">Based in</span>
+              <span class="detail-value">Nashville, Tennessee</span>
+            </div>
+          </div>
+          <div class="contact-detail">
+            <div>
+              <span class="detail-label">Response time</span>
+              <span class="detail-value">Within 48 hours</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-image">
+        <img src="https://images.unsplash.com/photo-1530521954074-e64f6810b32d?w=800&q=85&auto=format&fit=crop" alt="Travel planning" />
+      </div>
+    </div>
+
+    <!-- ─── Right / Form ────────────────────── -->
+    <div class="contact-right">
+      <div id="form-inner">
+        <p class="form-heading">Start your trip</p>
+        <p class="form-sub">Fill in a few details and one of our travel designers will be in touch to start crafting your itinerary.</p>
+
+        <form id="contact-form" name="inquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleSubmit(event)">
+          <input type="hidden" name="form-name" value="inquiry" />
+          <input type="hidden" name="_to" value="roaminquiries@roamtravel.club" />
+          <p class="hidden" style="display:none;"><label>Don't fill this out: <input name="bot-field" /></label></p>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">First name</label>
+              <input type="text" id="fname" placeholder="Jane" required />
+            </div>
+            <div class="form-group">
+              <label for="lname">Last name</label>
+              <input type="text" id="lname" placeholder="Smith" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" id="email" placeholder="jane@example.com" required />
+          </div>
+
+          <div class="form-group">
+            <label for="destination">Destination in mind</label>
+            <input type="text" id="destination" placeholder="e.g. Japan, Italy, open to ideas…" />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="travelers">No. of travelers</label>
+              <select id="travelers">
+                <option value="">Select</option>
+                <option>Just me</option>
+                <option>2 people</option>
+                <option>3–4 people</option>
+                <option>5+ people</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="duration">Trip length</label>
+              <select id="duration">
+                <option value="">Select</option>
+                <option>Weekend (2–3 days)</option>
+                <option>1 week</option>
+                <option>2 weeks</option>
+                <option>3+ weeks</option>
+                <option>Not sure yet</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Type of trip</label>
+            <div class="type-toggles">
+              <button type="button" class="type-toggle" onclick="this.classList.toggle('on')">Vacation</button>
+              <button type="button" class="type-toggle" onclick="this.classList.toggle('on')">Weekend escape</button>
+              <button type="button" class="type-toggle" onclick="this.classList.toggle('on')">Road trip</button>
+              <button type="button" class="type-toggle" onclick="this.classList.toggle('on')">Not sure</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Tell us more</label>
+            <textarea id="message" placeholder="What kind of experience are you looking for? Any special occasions, interests, or places on your list?"></textarea>
+          </div>
+
+          <div class="form-submit">
+            <button type="submit" class="btn-submit">Send inquiry</button>
+          </div>
+          <p class="form-note">We'll never share your details. By submitting you agree to our privacy policy.</p>
+        </form>
+      </div>
+
+      <div class="form-success" id="form-success">
+        <div class="success-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M4 10l4.5 4.5L16 7" stroke="var(--olive)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>We've got your inquiry.</h3>
+        <p>One of our travel designers will be in touch within 48 hours.<br><br>
+        In the meantime, follow our social media accounts and stay up to date with roam.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="white.roam.logo.png" alt="roam." class="footer-logo-img" />
+        <p>Intentional travel for people who want more than a vacation—they want a story.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="itineraries.html">Featured itineraries</a></li>
+          <li><a href="itineraries.html">Weekend escapes</a></li>
+          <li><a href="itineraries.html">Road trips</a></li>
+          <li><a href="itineraries.html">Custom trips</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="https://instagram.com/roamtravel.club" target="_blank">Instagram</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Start planning</h4>
+        <ul>
+          <li><a href="contact.html">Make an inquiry</a></li>
+          <li><a href="contact.html">Custom itinerary</a></li>
+          <li><a href="contact.html">Group travel</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 roam. All rights reserved.</p>
+      <p>Privacy &nbsp;&middot;&nbsp; Terms</p>
+    </div>
+  </footer>
+
+  <script>
+    function handleSubmit(e) {
+      e.preventDefault();
+      document.getElementById('form-inner').style.display = 'none';
+      document.getElementById('form-success').style.display = 'block';
+    }
+  </script>
+  <script src="logo.js"></script>
+</body>
+</html>

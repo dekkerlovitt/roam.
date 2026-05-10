@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>roam. — Featured Itineraries</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --cream:   #f4ede2;
+      --cream2:  #f9f5ee;
+      --text:    #4a3928;
+      --text-lt: #7a6550;
+      --border:  #ddd0bc;
+      --taupe:   #9e7d60;
+      --olive:   #3e4c36;
+    }
+
+    body {
+      background: var(--cream2);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── Nav ───────────────────────────────── */
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 28px 48px;
+      border-bottom: 1px solid var(--border);
+      background: var(--cream2);
+    }
+
+    .logo-img {
+      height: 32px;
+      width: auto;
+      display: block;
+    }
+
+    .top-nav ul { display: flex; gap: 32px; list-style: none; }
+
+    .top-nav a {
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      color: var(--text-lt);
+      transition: color 0.2s;
+    }
+
+    .top-nav a:hover, .top-nav a.active { color: var(--text); }
+
+    .contact-link {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      padding: 8px 20px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      transition: background 0.2s;
+    }
+
+    .contact-link:hover { background: var(--text); color: var(--cream2); }
+
+    /* ─── Page header ────────────────────────── */
+    .page-header {
+      padding: 72px 48px 56px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--taupe);
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    .page-header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(40px, 5vw, 64px);
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+
+    .page-header h1 em { font-style: italic; }
+
+    .page-header p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--text-lt);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* ─── Filter tabs ────────────────────────── */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 0 48px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .filter-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      padding: 18px 24px;
+      border: none;
+      background: transparent;
+      color: var(--text-lt);
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s;
+    }
+
+    .filter-btn::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1.5px;
+      background: var(--text);
+      transform: scaleX(0);
+      transition: transform 0.2s;
+    }
+
+    .filter-btn:hover { color: var(--text); }
+    .filter-btn.active { color: var(--text); font-weight: 500; }
+    .filter-btn.active::after { transform: scaleX(1); }
+
+    /* ─── Itinerary list ─────────────────────── */
+    .itinerary-list {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 48px 96px;
+    }
+
+    .itinerary-row {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 56px;
+      align-items: start;
+      padding: 56px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .itinerary-row:first-child { border-top: 1px solid var(--border); margin-top: 56px; }
+
+    .itin-img {
+      aspect-ratio: 4/3;
+      overflow: hidden;
+    }
+
+    .itin-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .itinerary-row:hover .itin-img img { transform: scale(1.04); }
+
+    .itin-meta { padding-top: 4px; }
+
+    .itin-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .tag {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border: 1px solid var(--border);
+      color: var(--text-lt);
+    }
+
+    .itin-meta h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 2.8vw, 40px);
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 10px;
+      line-height: 1.1;
+    }
+
+    .itin-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 17px;
+      font-weight: 300;
+      color: var(--text-lt);
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+
+    .itin-desc {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-lt);
+      line-height: 1.85;
+      margin-bottom: 28px;
+      max-width: 480px;
+    }
+
+    .itin-details {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .itin-detail .label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--taupe);
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .itin-detail .value {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .itin-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--olive);
+      transition: gap 0.2s;
+    }
+
+    .itinerary-row:hover .itin-cta { gap: 14px; }
+
+    /* ─── Tab Panels ─────────────────────────── */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .editorial-hero {
+      position: relative;
+      width: 100%;
+      height: 480px;
+      overflow: hidden;
+    }
+
+    .editorial-hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .editorial-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, rgba(30,18,8,0.45) 100%);
+    }
+
+    .editorial-body {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 72px 48px 96px;
+    }
+
+    .editorial-body h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 28px;
+    }
+
+    .editorial-body h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--text);
+      margin: 40px 0 12px;
+    }
+
+    .editorial-body p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--text-lt);
+      line-height: 1.85;
+      margin-bottom: 20px;
+    }
+
+    .editorial-body ul {
+      list-style: none;
+      margin: 12px 0 20px 0;
+      padding: 0;
+    }
+
+    .editorial-body ul li {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--text-lt);
+      line-height: 1.85;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .editorial-body ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--taupe);
+    }
+
+    .editorial-pull {
+      border-left: 2px solid var(--taupe);
+      padding: 16px 24px;
+      margin: 36px 0;
+      background: var(--cream);
+    }
+
+    .editorial-pull p {
+      margin-bottom: 4px;
+      font-size: 20px;
+      color: var(--text);
+    }
+
+    .editorial-pull p:last-child { margin-bottom: 0; }
+
+    .editorial-cta {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 40px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 4px;
+      transition: border-color 0.2s, gap 0.2s;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .editorial-cta:hover { border-color: var(--text); gap: 14px; }
+
+    @media (max-width: 600px) {
+      .editorial-body { padding: 48px 24px 72px; }
+      .editorial-hero { height: 300px; }
+    }
+
+    /* ─── Footer ─────────────────────────────── */
+    footer {
+      background: var(--text);
+      padding: 56px 48px 36px;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid rgba(244,237,226,0.1);
+      margin-bottom: 28px;
+    }
+
+    .footer-logo { font-weight: 700; font-size: 16px; color: #f9f5ee; display: block; margin-bottom: 12px; }
+    .footer-logo-img { height: 20px; width: auto; display: block; margin-bottom: 12px; }
+    .footer-brand p { font-size: 13px; color: rgba(244,237,226,0.45); line-height: 1.8; font-weight: 300; max-width: 220px; }
+    .footer-col h4 { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(244,237,226,0.3); font-weight: 500; margin-bottom: 18px; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 10px; }
+    .footer-col a { font-size: 13px; font-weight: 300; color: rgba(244,237,226,0.5); transition: color 0.2s; }
+    .footer-col a:hover { color: #f9f5ee; }
+    .footer-bottom { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; }
+    .footer-bottom p { font-size: 12px; font-weight: 300; color: rgba(244,237,226,0.28); }
+
+    @media (max-width: 900px) {
+      .top-nav ul { display: none; }
+      .top-nav, .page-header { padding-left: 24px; padding-right: 24px; }
+      .filter-bar { padding: 0 24px; overflow-x: auto; }
+      .itinerary-list { padding: 0 24px 64px; }
+      .itinerary-row { grid-template-columns: 1fr; gap: 24px; }
+      .itinerary-row:first-child { margin-top: 32px; }
+      .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
+      footer { padding: 48px 24px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <a href="index.html"><img src="roam.logo.png" alt="roam." class="logo-img" /></a>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="itineraries.html" class="active">Itineraries</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="advisory.html">Advisory</a></li>
+    </ul>
+    <a href="contact.html" class="contact-link">Contact</a>
+  </nav>
+
+  <div class="page-header">
+    <span class="eyebrow">Featured Itineraries</span>
+    <h1>Trips worth<br><em>taking slowly.</em></h1>
+    <p>Every itinerary is designed around place, pace, and the kind of moments you'll still be talking about years later.</p>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="switchTab(this,'air')">Air</button>
+    <button class="filter-btn" onclick="switchTab(this,'sea')">Sea</button>
+    <button class="filter-btn" onclick="switchTab(this,'land')">Land</button>
+  </div>
+
+  <!-- ─── Tab Panels ────────────────────────── -->
+
+  <div class="tab-panel active" id="panel-air">
+    <div class="editorial-hero">
+      <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1400&q=85&auto=format&fit=crop" alt="Air" />
+      <div class="editorial-hero-overlay"></div>
+    </div>
+    <div class="editorial-body">
+      <h2>Air is the beginning of most journeys.</h2>
+      <p>It's the moment you lift off, leave the familiar behind, and step into something new — whether that's a long‑dreamed‑of destination across the world or a spontaneous weekend escape just one state over.</p>
+      <p>At roam., we believe flying isn't just transportation. It's possibility.<br>It's the doorway to wonder.</p>
+
+      <div class="editorial-pull">
+        <p>Where are we flying to?</p>
+        <p><em>Anywhere your curiosity pulls you.</em></p>
+      </div>
+
+      <p>Maybe it's sunrise over the Alps.<br>
+      Maybe it's a quiet boutique hotel in Mexico where the ocean hums you to sleep.<br>
+      Maybe it's a quick reset in a new city — a weekend of good food, good design, and a hotel bed that feels like a cloud.<br>
+      Maybe it's your wedding in Italy, a group retreat in the mountains, or a family vacation that finally feels effortless.</p>
+
+      <h3>Travel that fits every traveler</h3>
+      <p>We partner with hotels, resorts, and all‑inclusive properties around the world to offer something for every style, every budget, and every kind of traveler — from luxury seekers to comfort‑first explorers.</p>
+      <p>Whether you want:</p>
+      <ul>
+        <li>A curated weekend getaway</li>
+        <li>A honeymoon or destination wedding</li>
+        <li>A group trip or corporate retreat</li>
+        <li>A multi‑stop international adventure</li>
+        <li>A simple flight + hotel package that still feels personal</li>
+      </ul>
+      <p>…we design it with intention.</p>
+
+      <h3>Everything you need, handled</h3>
+      <p>Flights. Transportation. Hotels. Experiences.<br>If it's part of your journey, we can book it.</p>
+      <p>You choose the destination — we handle the details.<br>So all you have to do is take a breath, step onto the plane, and let the world open up beneath you.</p>
+
+      <a href="contact.html" class="editorial-cta">Start planning your trip &nbsp;→</a>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="panel-sea">
+    <div class="editorial-hero">
+      <img src="AmalfiCoast.webp" alt="Sea" />
+      <div class="editorial-hero-overlay"></div>
+    </div>
+    <div class="editorial-body">
+      <h2>We're not separated by land — we're connected by water.</h2>
+      <p>Oceans, rivers, and coastlines have always linked us, carrying stories, cultures, and people from one place to another. At roam., we see the sea as an invitation — a gentle reminder that the world is closer than we think.</p>
+      <p>Cruising is one of the easiest, most effortless ways to experience multiple destinations in a single journey. One trip, countless cultures. One ship, endless possibilities.</p>
+
+      <div class="editorial-pull">
+        <p>Why cruise? Because the world feels bigger and smaller all at once.</p>
+      </div>
+
+      <p>A cruise can be:</p>
+      <ul>
+        <li>A couple's escape to turquoise water and slow mornings</li>
+        <li>A child's first big adventure, watching new cities rise from the horizon</li>
+        <li>A family reunion that finally feels stress‑free</li>
+        <li>A group retreat where everything is taken care of</li>
+        <li>A personal reset where the ocean becomes your backdrop</li>
+      </ul>
+      <p>Whether you're exploring Europe's quiet rivers or sailing across the open ocean, cruising lets you see more — without the rush.</p>
+
+      <h3>50+ cruise partners. Infinite ways to explore.</h3>
+      <p>We work with over 50 cruise lines around the world, giving you access to every style of sailing:</p>
+      <ul>
+        <li>Scenic river cruises through Europe's storybook towns</li>
+        <li>Ocean voyages to the Caribbean, Alaska, the Mediterranean, and beyond</li>
+        <li>Luxury small‑ship experiences with curated excursions</li>
+        <li>Family‑friendly mega‑ships full of entertainment and ease</li>
+        <li>All‑inclusive sailings where everything is handled</li>
+      </ul>
+      <p>If it floats, we can book it.</p>
+
+      <h3>Everything you need, seamlessly handled</h3>
+      <p>From the moment you decide to set sail, we take care of the details:</p>
+      <ul>
+        <li>Cruise selection</li>
+        <li>Flights</li>
+        <li>Transportation</li>
+        <li>Pre‑ and post‑cruise hotels</li>
+        <li>Shore excursions</li>
+        <li>Group coordination</li>
+      </ul>
+      <p>You choose the waters — we'll chart the course.</p>
+
+      <h3>Let the sea carry you somewhere new</h3>
+      <p>Whether you're dreaming of quiet riverbanks, island‑hopping, or watching the sun melt into the horizon from your balcony, roam. makes it effortless.</p>
+      <p>The world is waiting — and the water is already connecting you to it.</p>
+
+      <a href="contact.html" class="editorial-cta">Start planning your voyage &nbsp;→</a>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="panel-land">
+    <div class="editorial-hero">
+      <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1400&q=85&auto=format&fit=crop" alt="Land" />
+      <div class="editorial-hero-overlay"></div>
+    </div>
+    <div class="editorial-body">
+      <h2>Some of the best stories don't happen at the destination — they happen on the way.</h2>
+      <p>Land travel invites you to move at your own pace, follow the scenic route, and rediscover the joy of the journey itself. Whether it's a cross‑country adventure or a simple weekend drive, the road has a way of opening up the world in a different light.</p>
+      <p>At roam., we make land travel feel effortless, intentional, and beautifully planned.</p>
+
+      <div class="editorial-pull">
+        <p>Where are we headed?</p>
+        <p><em>Anywhere the road leads.</em></p>
+      </div>
+
+      <p>Maybe it's a national park you've always wanted to see.<br>
+      Maybe it's a string of small towns with good coffee and even better views.<br>
+      Maybe it's a long‑awaited family road trip, a romantic escape, or a solo reset with the windows down and your favorite playlist on repeat.</p>
+
+      <h3>Road trips, reimagined</h3>
+      <p>We coordinate every detail so your only job is to enjoy the drive:</p>
+      <ul>
+        <li>Custom routes designed around scenery, interests, and pace</li>
+        <li>Must‑see sights and hidden gems along the way</li>
+        <li>Hotel stays that match your style — boutique, luxury, cozy, or simple</li>
+        <li>Rental cars and vehicle options that fit your trip</li>
+        <li>Experiences that turn a drive into a journey</li>
+      </ul>
+      <p>From desert highways to mountain passes, coastal roads to countryside lanes — we map it all with intention.</p>
+
+      <h3>Travel that feels grounded</h3>
+      <p>Land travel is about connection: to the places you pass through, to the people you're with, and to the moments you might have missed if you'd flown over them.</p>
+      <p>Whether you want:</p>
+      <ul>
+        <li>A scenic weekend escape</li>
+        <li>A national park circuit</li>
+        <li>A multi‑state adventure</li>
+        <li>A family road trip</li>
+        <li>A slow, restorative journey</li>
+      </ul>
+      <p>…we'll design it so it feels effortless and meaningful.</p>
+
+      <h3>Let the road lead you somewhere new</h3>
+      <p>You choose the direction.<br>We'll take care of the route, the stays, the logistics, and the details.</p>
+      <p>All you have to do is start the engine.</p>
+
+      <a href="contact.html" class="editorial-cta">Start planning your road trip &nbsp;→</a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="white.roam.logo.png" alt="roam." class="footer-logo-img" />
+        <p>Intentional travel for people who want more than a vacation—they want a story.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="itineraries.html">Featured itineraries</a></li>
+          <li><a href="itineraries.html">Weekend escapes</a></li>
+          <li><a href="itineraries.html">Road trips</a></li>
+          <li><a href="itineraries.html">Custom trips</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="https://instagram.com/roamtravel.club" target="_blank">Instagram</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Start planning</h4>
+        <ul>
+          <li><a href="contact.html">Make an inquiry</a></li>
+          <li><a href="contact.html">Custom itinerary</a></li>
+          <li><a href="contact.html">Group travel</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 roam. All rights reserved.</p>
+      <p>Privacy &nbsp;&middot;&nbsp; Terms</p>
+    </div>
+  </footer>
+
+  <script>
+    function switchTab(btn, type) {
+      document.querySelectorAll('.filter-btn').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('panel-' + type).classList.add('active');
+    }
+
+    // Auto-switch to tab based on URL hash (e.g. itineraries.html#sea)
+    (function() {
+      const hash = window.location.hash.replace('#', '');
+      if (hash && document.getElementById('panel-' + hash)) {
+        const btn = document.querySelector('[onclick*="\'' + hash + '\'"]');
+        if (btn) switchTab(btn, hash);
+      }
+    })();
+  </script>
+  <script src="logo.js"></script>
+</body>
+</html>
